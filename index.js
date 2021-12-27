@@ -1,12 +1,27 @@
 
 const mongoose = require('mongoose');
 
-const bookSchema = new mongoose.Schema({
+const notificationSchema = new mongoose.Schema({
     title: String,
-    author: String
-});
+    message: String,
+    type: String,
+    iconUrl: String,
+    callToAction: String,
+    link: String,
+    timestamp: String,
+    data: String,
+    source: String,
+    user: mongoose.ObjectId
+})
 
-const Book = mongoose.model('Book', bookSchema);
+const Notification = mongoose.model('Notification', notificationSchema);
+
+const userSchema = new mongoose.Schema({
+    name: String
+})
+
+const User = mongoose.model('User', userSchema);
+
 
 const { ApolloServer, gql } = require('apollo-server');
 
@@ -14,54 +29,79 @@ const { ApolloServer, gql } = require('apollo-server');
 // that together define the "shape" of queries that are executed against
 // your data.
 const typeDefs = gql`
-  # Comments in GraphQL strings (such as this one) start with the hash (#) symbol.
 
-  # This "Book" type defines the queryable fields for every book in our data source.
-  type Book {
-    title: String
-    author: String
-    _id: ID
-  }
+    type User {
+        name: String
+        _id: ID
+    }
 
-  # The "Query" type is special: it lists all of the available queries that
-  # clients can execute, along with the return type for each. In this
-  # case, the "books" query returns an array of zero or more Books (defined above).
-  type Query {
-    books: [Book]
-  }
+    input UserInput {
+        name: String
+    }
 
-  type Mutation {
-    createBook(title: String, author: String): Book,
-    deleteBook(id: ID): Book
-  }
-`;
+    type Notification {
+        title: String
+        message: String
+        type: String
+        iconUrl: String
+        callToAction: String
+        link: String
+        timestamp: String
+        _id: ID
+        data: String
+        source: String
+        user: User
+    }
 
-const books = [
-    {
-        title: 'The Awakening',
-        author: 'Kate Chopin',
-    },
-    {
-        title: 'City of Glass',
-        author: 'Paul Auster',
-    },
-];
+    input NotificationInput {
+        title: String
+        message: String
+        type: String
+        iconUrl: String
+        callToAction: String
+        link: String
+        timestamp: String
+        data: String
+        source: String
+        user: ID
+    }
+
+    type Query {
+        notifications: [Notification]
+        notificationsForUser(userId: ID): [Notification]
+
+        users: [User]
+    }
+
+    type Mutation {
+        createNotification(notification: NotificationInput): Notification
+        deleteNotification(id: ID): Notification
+
+        createUser(user: UserInput): User
+    }
+`
 
 // Resolvers define the technique for fetching the types defined in the
 // schema. This resolver retrieves books from the "books" array above.
 const resolvers = {
     Query: {
-        books: async () => await Book.find({})
+        notifications: async () => Notification.find({}),
+        notificationsForUser: async (nothing, params) => await Notification.find({ user: params.userId }),
+        users: async () => User.find({})
     },
     Mutation: {
-        createBook: async (nothing, params) => {
-            const book = new Book(params)
-            console.log(`creating a new book: ${JSON.stringify(book)}`)
-            const record = await book.save()
-            return record.toObject()
+        createNotification: async (nothing, params) => {
+            const notification = new Notification(params)
+            console.log(`creating a new notification: ${JSON.stringify(notification)}`)
+            return notification.save()
         },
-        deleteBook: async (nothing, params) => {
-            return Book.findByIdAndDelete(params.id)
+        deleteNotification: async (nothing, params) => {
+            return Notification.findByIdAndDelete(params.id)
+        },
+        createUser: async (nothing, params) => {
+            const user = new User(params.user)
+            console.log(`creating a new user: ${JSON.stringify(user)}`)
+            return user.save()
         }
     }
 };
