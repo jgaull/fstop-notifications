@@ -1,0 +1,16 @@
+{
+  "name": "fstop-notifications",
+  "version": "0.0.1",
+  "description": "Capture notifications and persist them in a graph.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "Jonathan Gaull",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^3.5.0",
+    "graphql": "^16.2.0"
+  }
+}
