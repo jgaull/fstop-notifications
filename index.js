@@ -11,6 +11,7 @@ const notificationSchema = new mongoose.Schema({
     timestamp: String,
     data: String,
     source: String,
+    integration: String,
     user: mongoose.ObjectId
 })
 
@@ -50,6 +51,7 @@ const typeDefs = gql`
         _id: ID
         data: String
         source: String
+        integration: ID
         user: User
     }
 
@@ -63,6 +65,7 @@ const typeDefs = gql`
         timestamp: String
         data: String
         source: String
+        integration: String
         user: ID
     }
 
@@ -91,7 +94,7 @@ const resolvers = {
     },
     Mutation: {
         createNotification: async (nothing, params) => {
-            const notification = new Notification(params)
+            const notification = new Notification(params.notification)
             console.log(`creating a new notification: ${JSON.stringify(notification)}`)
             return notification.save()
         },
