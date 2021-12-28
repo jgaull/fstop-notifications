@@ -1,5 +1,9 @@
 
-const mongoose = require('mongoose');
+const mongoose = require('mongoose')
+const schema = require('./schema')
+console.log(`schema: ${schema}`)
+
+const User = require('./models/user')
 
 const notificationSchema = new mongoose.Schema({
     title: String,
@@ -16,14 +20,6 @@ const notificationSchema = new mongoose.Schema({
 })
 
 const Notification = mongoose.model('Notification', notificationSchema);
-
-const userSchema = new mongoose.Schema({
-    name: String,
-    email: String,
-    password: String
-})
-
-const User = mongoose.model('User', userSchema)
 
 const integrationSchema = new mongoose.Schema({
     type: String,
@@ -179,7 +175,7 @@ const resolvers = {
 
 // The ApolloServer constructor requires two parameters: your schema
 // definition and your set of resolvers.
-const server = new ApolloServer({ typeDefs, resolvers });
+const server = new ApolloServer({ schema, resolvers });
 
 async function main() {
 
