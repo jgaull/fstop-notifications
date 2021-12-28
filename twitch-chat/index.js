@@ -7,17 +7,17 @@ let activeIntegrations
 async function loadIntegrations() {
 
   const query = gql`
-  query Integrations($query: IntegrationInput) {
-    integrations(query: $query) {
-      _id
-      user
-      integrationSettings
+    query Integrations($filter: FilterFindManyIntegrationInput) {
+      integrations(filter: $filter) {
+        user
+        integrationSettings
+        _id
+      }
     }
-  }
   `
 
   const variables = {
-    query: {
+    filter: {
       type: "twitch-chat"
     }
   }
