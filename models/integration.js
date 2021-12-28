@@ -1,6 +1,7 @@
 
 const mongoose = require('mongoose')
 const { composeMongoose } = require('graphql-compose-mongoose')
+const utils = require('./model-utils')
 
 const User = require('./user')
 
@@ -24,7 +25,10 @@ const schema = new mongoose.Schema({
 //schema.method({method: () => 'thing' }) for future reference
 
 const model = mongoose.model('Integration', schema)
+
 const typeComposer = composeMongoose(model, {})
+model.typeComposer = typeComposer
+
 const resolvers = typeComposer.mongooseResolvers
 
 model.graphQueries = {
@@ -39,16 +43,6 @@ model.graphMutations = {
     deleteIntegrations: resolvers.removeMany()
 }
 
-model.typeComposer = typeComposer
-
-typeComposer.addRelation('user', {
-
-        resolver: () => User.typeComposer.mongooseResolvers.findById(),
-        prepareArgs: { // resolver `findByIds` has `_ids` arg, let provide value to it
-            _id: source => source.user || null,
-        },
-        projection: { user: true }, // point fields in source object, which should be fetched from DB
-    }
-);
+utils.addOneToManyRelation(model, 'user', User)
 
 module.exports = model

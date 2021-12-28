@@ -1,6 +1,10 @@
 
 const mongoose = require('mongoose')
 const { composeMongoose } = require('graphql-compose-mongoose')
+const utils = require('./model-utils')
+
+const User = require('./user')
+const Integration = require('./integration')
 
 const schema = new mongoose.Schema({
     title: String,
@@ -12,15 +16,24 @@ const schema = new mongoose.Schema({
     timestamp: String,
     data: String,
     source: String,
-    integration: String,
-    user: mongoose.ObjectId
+    integration: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Integration'
+    },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }
 })
 
 //schema.method({method: () => 'thing' }) for future reference
 
 const model = mongoose.model('Notification', schema)
-const composer = composeMongoose(model, {})
-const resolvers = composer.mongooseResolvers
+
+const typeComposer = composeMongoose(model, {})
+model.typeComposer = typeComposer
+
+const resolvers = typeComposer.mongooseResolvers
 
 model.graphQueries = {
     notifications: resolvers.findMany()
@@ -31,5 +44,8 @@ model.graphMutations = {
     deleteNotification: resolvers.removeById(),
     deleteNotifications: resolvers.removeMany(),
 }
+
+utils.addOneToManyRelation(model, 'user', User)
+utils.addOneToManyRelation(model, 'integration', Integration)
 
 module.exports = model
