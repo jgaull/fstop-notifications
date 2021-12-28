@@ -1,6 +1,6 @@
 
 const mongoose = require('mongoose')
-const { composeMongoose } = require('graphql-compose-mongoose');
+const { composeMongoose } = require('graphql-compose-mongoose')
 
 const schema = new mongoose.Schema({
     name: String,

@@ -2,24 +2,6 @@
 const mongoose = require('mongoose')
 const schema = require('./schema')
 
-const User = require('./models/user')
-
-const notificationSchema = new mongoose.Schema({
-    title: String,
-    message: String,
-    type: String,
-    iconUrl: String,
-    callToAction: String,
-    link: String,
-    timestamp: String,
-    data: String,
-    source: String,
-    integration: String,
-    user: mongoose.ObjectId
-})
-
-const Notification = mongoose.model('Notification', notificationSchema);
-
 const integrationSchema = new mongoose.Schema({
     type: String,
     user: mongoose.ObjectId,
