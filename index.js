@@ -40,6 +40,10 @@ const typeDefs = gql`
         name: String
     }
 
+    type BulkDeletionResult {
+        deletedCount: Int
+    }
+
     type Notification {
         title: String
         message: String
@@ -79,6 +83,7 @@ const typeDefs = gql`
     type Mutation {
         createNotification(notification: NotificationInput): Notification
         deleteNotification(id: ID): Notification
+        deleteNotifications: BulkDeletionResult
 
         createUser(user: UserInput): User
     }
@@ -100,6 +105,9 @@ const resolvers = {
         },
         deleteNotification: async (nothing, params) => {
             return Notification.findByIdAndDelete(params.id)
+        },
+        deleteNotifications: async (nothing, params) => {
+            return Notification.deleteMany({})
         },
         createUser: async (nothing, params) => {
             const user = new User(params.user)
