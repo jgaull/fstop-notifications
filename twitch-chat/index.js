@@ -2,22 +2,61 @@ require('dotenv').config()
 const tmi = require('tmi.js')
 const { request, gql } = require('graphql-request')
 
-// Define configuration options
-const opts = {
-  channels: [
-    process.env.CHANNEL_NAME
-  ]
+let activeIntegrations
+
+async function loadIntegrations() {
+
+  const query = gql`
+  query Integrations($query: IntegrationInput) {
+    integrations(query: $query) {
+      _id
+      user
+      integrationSettings
+    }
+  }
+  `
+
+  const variables = {
+    query: {
+      type: "twitch-chat"
+    }
+  }
+
+  const response = await request(process.env.INGEST_PATH, query, variables)
+  activeIntegrations = response.integrations.map(integration => {
+    return {
+      _id: integration._id,
+      user: integration.user,
+      integrationSettings: JSON.parse(integration.integrationSettings)
+    }
+  })
+
+  const channelsToMonitor = activeIntegrations
+  .map(integration => 
+    integration.integrationSettings.channelName)
+  .filter((channelName, index, channels) =>  
+    channels.indexOf(channelName) == index)
+
+  const opts = {
+    channels: channelsToMonitor
+  }
+  
+  // Create a client with our options
+  console.log(`connecting to twitch channels: [${opts.channels}]`)
+  const client = new tmi.client(opts)
+
+  // Register our event handlers (defined below)
+  client.on('message', onMessageHandler)
+  client.on('connected', onConnectedHandler)
+
+  // Connect to Twitch:
+  client.connect()
 }
 
-// Create a client with our options
-const client = new tmi.client(opts)
-
-// Register our event handlers (defined below)
-client.on('message', onMessageHandler)
-client.on('connected', onConnectedHandler)
-
-// Connect to Twitch:
-client.connect()
+// Called every time the bot connects to Twitch chat
+function onConnectedHandler (addr, port) {
+  console.log(`* Connected to ${addr}:${port}`)
+}
 
 // Called every time a message comes in
 async function onMessageHandler (target, context, message, self) {
@@ -50,18 +89,28 @@ async function onMessageHandler (target, context, message, self) {
   }
   `
 
-  const variables = { 
-    notification: {
-      title: context['display-name'],
-      type: "Info",
-      data: JSON.stringify(context),
-      integration: "twitch-chat",
-      message
+  const affectedIntegrations = activeIntegrations.filter(integration => {
+    return integration.integrationSettings.channelName.toLowerCase() == target.substring(1)
+  })
+
+  const requests = affectedIntegrations.map(integration => {
+
+    const variables = {
+      notification: {
+        title: context['display-name'],
+        type: "Info",
+        data: JSON.stringify(context),
+        integration: integration._id,
+        user: integration.user,
+        message
+      }
     }
-  }
+    
+    return request(process.env.INGEST_PATH, query, variables)
+  })
 
   try {
-    await request(process.env.INGEST_PATH, query, variables)
+    await Promise.all(requests)
     console.log(`success sending twitch chat message to ingest server!`)
   }
   catch (error) {
@@ -69,7 +118,4 @@ async function onMessageHandler (target, context, message, self) {
   }
 }
 
-// Called every time the bot connects to Twitch chat
-function onConnectedHandler (addr, port) {
-  console.log(`* Connected to ${addr}:${port}`)
-}
+loadIntegrations()
