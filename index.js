@@ -2,16 +2,6 @@
 const mongoose = require('mongoose')
 const schema = require('./schema')
 
-const integrationSchema = new mongoose.Schema({
-    type: String,
-    user: mongoose.ObjectId,
-    integrationUsername: String,
-    integrationAuthToken: String,
-    integrationSettings: String
-})
-
-const Integration = mongoose.model('Integration', integrationSchema)
-
 const { ApolloServer, gql } = require('apollo-server');
 
 // A schema is a collection of type definitions (hence "typeDefs")
