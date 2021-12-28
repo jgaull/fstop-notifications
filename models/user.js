@@ -11,11 +11,12 @@ const schema = new mongoose.Schema({
 //schema.method({method: () => 'thing' }) for future reference
 
 const model = mongoose.model('User', schema)
-const composer = composeMongoose(model, {})
-const resolvers = composer.mongooseResolvers
+const typeComposer = composeMongoose(model, {})
+const resolvers = typeComposer.mongooseResolvers
 
 model.graphQueries = {
-    users: resolvers.findMany()
+    users: resolvers.findMany(),
+    user: resolvers.findById(),
 }
 
 model.graphMutations = {
@@ -24,5 +25,7 @@ model.graphMutations = {
     deleteUser: resolvers.removeById(),
     deleteUsers: resolvers.removeMany()
 }
+
+model.typeComposer = typeComposer
 
 module.exports = model
