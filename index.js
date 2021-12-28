@@ -1,7 +1,6 @@
 
 const mongoose = require('mongoose')
 const schema = require('./schema')
-console.log(`schema: ${schema}`)
 
 const User = require('./models/user')
 
