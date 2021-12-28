@@ -70,10 +70,6 @@ const typeDefs = gql`
         integrationSettings: String
     }
 
-    type BulkDeletionResult {
-        deletedCount: Int
-    }
-
     type Notification {
         title: String
         message: String
@@ -103,6 +99,18 @@ const typeDefs = gql`
         user: ID
     }
 
+    type BulkDeletionResult {
+        deletedCount: Int
+    }
+
+    type UpdateResult {
+        matchedCount: Int
+        modifiedCount: Int
+        acknowledged: Boolean
+        upsertedId: ID
+        upsertedCount: Int
+    }
+
     type Query {
         notifications: [Notification]
         notificationsForUser(userId: ID): [Notification]
@@ -119,9 +127,12 @@ const typeDefs = gql`
         deleteNotifications: BulkDeletionResult
 
         createUser(user: UserInput): User
+        updateUser(id: ID, input: UserInput): UpdateResult
+        deleteUser(id: ID): User
+        deleteUsers: BulkDeletionResult
 
         createIntegration(input: IntegrationInput): Integration
-        updateIntegration(id: ID, input: IntegrationInput): Integration
+        updateIntegration(id: ID, input: IntegrationInput): UpdateResult
         deleteIntegration(id: ID): Integration
         deleteIntegrations: BulkDeletionResult
     }
@@ -134,9 +145,7 @@ const resolvers = {
         notifications: async () => Notification.find({}),
         notificationsForUser: async (nothing, params) => await Notification.find({ user: params.userId }),
         users: async () => User.find({}),
-        integrations: async (nothing, params) => {
-            return Integration.find(params.query)
-        },
+        integrations: async (nothing, params) => Integration.find(params.query),
         integration: async (nothing, params) => Integration.findById(params.id)
     },
     Mutation: {
@@ -151,15 +160,18 @@ const resolvers = {
             const user = new User(params.user)
             return user.save()
         },
+        updateUser: async (nothing, params) => {
+            const User = new User(params.input)
+            return user.updateOne({ _id: params.id }, params.input)
+        },
+        deleteUser: async (nothing, params) => User.findByIdAndDelete(params.id),
+        deleteUsers: async () => User.deleteMany({}),
 
         createIntegration: async (nothing, params) => {
             const integration = new Integration(params.input)
             return integration.save()
         },
-        updateIntegration: async (nothing, params) => {
-            const integration = new Integration(params.input)
-            return integration.updateOne({ _id: params.id }, params.input)
-        },
+        updateIntegration: async (nothing, params) => Integration.updateOne({ _id: params.id }, params.input),
         deleteIntegration: async (nothing, params) => Integration.findByIdAndDelete(params.id),
         deleteIntegrations: async () => Integration.deleteMany({})
     }
