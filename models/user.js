@@ -1,6 +1,7 @@
 
 const mongoose = require('mongoose')
 const { composeMongoose } = require('graphql-compose-mongoose')
+const { schemaComposer } = require('graphql-compose')
 const bcrypt = require('bcrypt')
 
 //Create a new Schema
@@ -64,16 +65,6 @@ const typeComposer = composeMongoose(model, {
 //attach the typeComposer to the model
 model.typeComposer = typeComposer
 
-//generate custom types
-model.customInputTypes = [{
-    name: 'CreateUserInput',
-    fields: {
-        email: 'String!',
-        password: 'String!',
-        confirmPassword: 'String',
-    },
-}]
-
 //map resolvers
 const mongooseResolvers = typeComposer.mongooseResolvers
 
@@ -94,7 +85,14 @@ function createUser() {
     return {
         type: 'User', // the return type
         args: { // input arguments
-            input: 'CreateUserInput'
+            input: schemaComposer.createInputTC({
+                name: 'CreateUserInput',
+                fields: {
+                    email: 'String!',
+                    password: 'String!',
+                    confirmPassword: 'String',
+                }
+            })
         },
         resolve: (source, args, context, info) => { //a resolver function
 

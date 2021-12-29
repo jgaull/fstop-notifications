@@ -13,13 +13,6 @@ for (const key in modelRegistry) {
     if (Object.hasOwnProperty.call(modelRegistry, key)) {
 
         const model = modelRegistry[key]
-
-        if (model.customInputTypes) {
-            model.customInputTypes.forEach(inputType => 
-                schemaComposer.createInputTC(inputType)
-            )
-        }
-        
         schemaComposer.Query.addFields(model.graphQueries)
         schemaComposer.Mutation.addFields(model.graphMutations)
     }
