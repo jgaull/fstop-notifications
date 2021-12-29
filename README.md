@@ -13,6 +13,7 @@ index.js to test
  
 ## Todo
 - [ ] Add required parameters to the API
+- [ ] Add input validation
 - [ ] Add support for any type objects
 - [ ] Add authentication for Integration Providers
 - [ ] Add authentication for Users
