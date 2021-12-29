@@ -87,7 +87,7 @@ async function onMessageHandler (target, context, message, self) {
 		const variables = {
 			record: {
 				title: context['display-name'],
-				type: "Info",
+				type: "info",
 				data: JSON.stringify(context),
 				integration: integration._id,
 				user: integration.user._id,

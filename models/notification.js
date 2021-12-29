@@ -4,23 +4,36 @@ const { composeMongoose } = require('graphql-compose-mongoose')
 const utils = require('./model-utils')
 
 const schema = new mongoose.Schema({
-    title: String,
-    message: String,
-    type: String,
-    iconUrl: String,
-    callToAction: String,
-    link: String,
-    timestamp: String,
-    data: String,
-    source: String,
+    title: {
+        type: String,
+        required: true
+    },
+    message: {
+        type: String
+    },
+    type: {
+        type: String,
+        required: true,
+        enum: ['info', 'warning', 'error']
+    },
     integration: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Integration'
+        ref: 'Integration',
+        required: true
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    }
+        ref: 'User',
+        required: true
+    },
+    data: {
+        type: mongoose.Schema.Types.Mixed,
+        description: 'arbitrary data from the source system'
+    },
+    iconUrl: String,
+    callToAction: String,
+    link: String,
+    originatedAt: String,
 })
 
 //schema.method({method: () => 'thing' }) for future reference
