@@ -1,15 +1,14 @@
 
 
 module.exports.addOneToManyRelation = (parentModel, key, dbKey) => {
+    addRelation(parentModel, key, dbKey, 'findById', '_id')
+}
 
-    const projection = {}
+module.exports.addManyToManyRelation = (parentModel, key, dbKey) => {
+    addRelation(parentModel, key, dbKey, 'findByIds', '_ids')
+}
 
-    if (dbKey) {
-        projection[dbKey] = true
-    }
-    else {
-        projection[key] = true
-    }
+function addRelation(parentModel, key, dbKey, resolverName, idArg) {
 
     const moduleName = parentModel.schema.paths[key].options.ref.toLowerCase()
     const childModel = require(`./${moduleName}`)
@@ -18,8 +17,10 @@ module.exports.addOneToManyRelation = (parentModel, key, dbKey) => {
 
         resolver: () => childModel.typeComposer.mongooseResolvers.findById(),
         prepareArgs: { 
-            _id: source => source[key] || null,
+            [idArg]: source => source[key] || null,
         },
-        projection,
+        projection: {
+            [dbKey || key]: true
+        },
     })
 }
