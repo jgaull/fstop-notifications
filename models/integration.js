@@ -6,17 +6,27 @@ const utils = require('./model-utils')
 const schema = new mongoose.Schema({
     type: {
         type: String,
+        required: true,
+        index: true,
         enum: ['twitch-chat', 'webhook']
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        index: true,
+        required: true
     },
     integrationUsername: String,
     integrationAuthToken: String,
     integrationSettings: {
         type: mongoose.Schema.Types.Mixed,
         description: 'Settings specific to each integration'
+    }
+},
+{
+    timestamps: {
+        createdAt: true,
+        updatedAt: true
     }
 })
 
@@ -34,9 +44,15 @@ model.graphQueries = {
     integration: resolvers.findById()
 }
 
+const inputSettings = {
+    record: {
+        removeFields: [ 'createdAt', 'updatedAt' ]
+    }
+}
+
 model.graphMutations = {
-    createIntegration: resolvers.createOne(),
-    updateIntegration: resolvers.updateById(),
+    createIntegration: resolvers.createOne(inputSettings),
+    updateIntegration: resolvers.updateById(inputSettings),
     deleteIntegration: resolvers.removeById(),
     deleteIntegrations: resolvers.removeMany()
 }
