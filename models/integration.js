@@ -3,8 +3,6 @@ const mongoose = require('mongoose')
 const { composeMongoose } = require('graphql-compose-mongoose')
 const utils = require('./model-utils')
 
-const User = require('./user')
-
 const schema = new mongoose.Schema({
     type: {
         type: String,
@@ -43,6 +41,6 @@ model.graphMutations = {
     deleteIntegrations: resolvers.removeMany()
 }
 
-utils.addOneToManyRelation(model, 'user', User)
+utils.addOneToManyRelation(model, 'user')
 
 module.exports = model

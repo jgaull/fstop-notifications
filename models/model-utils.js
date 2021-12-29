@@ -1,6 +1,6 @@
 
 
-module.exports.addOneToManyRelation = (parentModel, key, childModel, dbKey) => {
+module.exports.addOneToManyRelation = (parentModel, key, dbKey) => {
 
     const projection = {}
 
@@ -10,6 +10,9 @@ module.exports.addOneToManyRelation = (parentModel, key, childModel, dbKey) => {
     else {
         projection[key] = true
     }
+
+    const moduleName = parentModel.schema.paths[key].options.ref.toLowerCase()
+    const childModel = require(`./${moduleName}`)
 
     parentModel.typeComposer.addRelation(key, {
 
