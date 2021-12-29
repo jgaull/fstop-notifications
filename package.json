@@ -1,6 +1,6 @@
 {
   "name": "fstop-notifications",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Capture notifications and persist them in a graph.",
   "main": "index.js",
   "scripts": {
@@ -12,6 +12,8 @@
   "dependencies": {
     "apollo-server": "^3.5.0",
     "graphql": "^16.2.0",
+    "graphql-compose": "^9.0.6",
+    "graphql-compose-mongoose": "^9.7.1",
     "mongoose": "^6.1.3"
   }
 }

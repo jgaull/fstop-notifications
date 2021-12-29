@@ -7,17 +7,17 @@ let activeIntegrations
 async function loadIntegrations() {
 
   const query = gql`
-  query Integrations($query: IntegrationInput) {
-    integrations(query: $query) {
-      _id
-      user
-      integrationSettings
+    query Integrations($filter: FilterFindManyIntegrationInput) {
+      integrations(filter: $filter) {
+        user
+        integrationSettings
+        _id
+      }
     }
-  }
   `
 
   const variables = {
-    query: {
+    filter: {
       type: "twitch-chat"
     }
   }
@@ -69,20 +69,20 @@ async function onMessageHandler (target, context, message, self) {
   */
 
   const query = gql`
-  mutation CreateNotification($notification: NotificationInput) {
-    createNotification(notification: $notification) {
-      title
-      message
-      type
-      iconUrl
-      callToAction
-      link
-      timestamp
-      _id
-      data
-      source
-      user {
-        name
+  mutation CreateNotification($record: CreateOneNotificationInput!) {
+    createNotification(record: $record) {
+      record {
+        title
+        message
+        type
+        iconUrl
+        callToAction
+        link
+        timestamp
+        data
+        source
+        integration
+        user
         _id
       }
     }
@@ -96,7 +96,7 @@ async function onMessageHandler (target, context, message, self) {
   const requests = affectedIntegrations.map(integration => {
 
     const variables = {
-      notification: {
+      record: {
         title: context['display-name'],
         type: "Info",
         data: JSON.stringify(context),
