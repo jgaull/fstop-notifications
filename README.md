@@ -12,9 +12,9 @@ index.js to test
 - `cd twitch-chat && npm start` to start the Twitch Chat integration
  
 ## Todo
-- [ ] Add required parameters to the API
+- [x] Add required parameters to the API
 - [ ] Add input validation
-- [ ] Add support for any type objects
+- [x] Add support for any type objects
 - [ ] Add authentication for Integration Providers
 - [ ] Add authentication for Users
 - [ ] Add subscription for Notifications
