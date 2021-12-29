@@ -26,3 +26,4 @@ index.js to test
 - [ ] Add support for more Twitch notifications
 - [ ] Add webhook Integration Provider
 - [ ] Password reset flow
+- [ ] Make integration tokens "secret"
