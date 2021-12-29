@@ -68,7 +68,7 @@ model.typeComposer = typeComposer
 model.customInputTypes = [{
     name: 'CreateUserInput',
     fields: {
-        email: 'Int!',
+        email: 'String!',
         password: 'String!',
         confirmPassword: 'String',
     },
@@ -98,9 +98,10 @@ function createUser() {
         },
         resolve: (source, args, context, info) => { //a resolver function
 
-            const { email, password, confirmPassword } = args
+            const { email, password, confirmPassword } = args.input
 
             const newPassword = confirmPassword || password
+
             if ( newPassword != password ) {
                 throw new Error('Passwords do not match')
             }
