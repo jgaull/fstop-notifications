@@ -25,3 +25,4 @@ index.js to test
 - [ ] Unit testing for the twitch-chat integration
 - [ ] Add support for more Twitch notifications
 - [ ] Add webhook Integration Provider
+- [ ] Password reset flow
