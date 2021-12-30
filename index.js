@@ -6,11 +6,19 @@ const { AccountsPassword } = require('@accounts/password')
 const { AccountsModule } = require('@accounts/graphql-api')
 
 const { ApolloServer } = require('apollo-server')
-const { makeExecutableSchema } = require('graphql-tools')
+
+const buildSchema = require('./schema')
+
+// making this a dictionary because I feel like that will be useful later on.
+const modelRegistry = {
+    /* User: require('./models/user'), */
+    Notification: require('./models/notification'),
+    Integration: require('./models/integration')
+}
 
 async function main() {
 
-    await mongoose.connect('mongodb://localhost:27017/test')
+    mongoose.connect('mongodb://localhost:27017/test')
 
     const accountsMongo = new Mongo(mongoose.connection)
     const accountsPassword = new AccountsPassword({})
@@ -29,25 +37,11 @@ async function main() {
     // We generate the accounts-js GraphQL module
     const accountsGraphQL = AccountsModule.forRoot({ accountsServer });
 
-    const accountsSchema = makeExecutableSchema({
-        typeDefs: accountsGraphQL.typeDefs,
-        resolvers: accountsGraphQL.resolvers,
-        schemaDirectives: {
-            ...accountsGraphQL.schemaDirectives,
-        },
-    })
-
-    const { schemaComposer } = require('graphql-compose')
-    schemaComposer.merge(require('./schema'))
-    schemaComposer.merge(accountsSchema)
-
     // When we instantiate our Apollo server we use the schema and context properties
-    const config = {
-        schema: schemaComposer.buildSchema(),
+    const server = new ApolloServer({
+        schema: buildSchema(modelRegistry, accountsGraphQL.schema),
         context: accountsGraphQL.context,
-    }
-
-    const server = new ApolloServer(config)
+    })
 
     // The `listen` method launches a web server.
     const { url } = await server.listen()
