@@ -92,7 +92,7 @@ function createUser() {
     return {
         type: 'User', // the return type
         args: { // input arguments
-            input: schemaComposer.createInputTC({
+            input: schemaComposer.createInputTC({ //This can also be a string name of an already defined input object
                 name: 'CreateUserInput',
                 fields: {
                     email: 'String!',
