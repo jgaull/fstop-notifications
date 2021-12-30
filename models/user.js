@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const { composeMongoose } = require('graphql-compose-mongoose')
 const { schemaComposer } = require('graphql-compose')
 const bcrypt = require('bcrypt')
+const Joi = require('joi')
 
 //Create a new Schema
 const schema = new mongoose.Schema({
@@ -11,7 +12,13 @@ const schema = new mongoose.Schema({
         required: true,
         index: true,
         unique: true,
-        lowercase: true
+        lowercase: true,
+        validate: value => {
+            const validationResult = Joi.string().email().validate(value)
+            if (validationResult.error) {
+                throw new Error(`"${value}" is not a valid email address.`)
+            }
+        }
     },
     password: {
         type: String,
@@ -20,7 +27,7 @@ const schema = new mongoose.Schema({
     }
 },
 {
-    timestamps: { 
+    timestamps: {
         createdAt: true,
         updatedAt: true
     }
