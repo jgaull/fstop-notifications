@@ -1,6 +1,6 @@
 {
   "name": "fstop-notifications",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Capture notifications and persist them in a graph.",
   "main": "index.js",
   "scripts": {
@@ -10,6 +10,12 @@
   "author": "Jonathan Gaull",
   "license": "ISC",
   "dependencies": {
+    "@accounts/graphql-api": "^0.33.1",
+    "@accounts/magic-link": "^0.1.1",
+    "@accounts/mongo": "^0.33.5",
+    "@accounts/password": "^0.32.1",
+    "@accounts/server": "^0.33.1",
+    "@graphql-modules/core": "^0.7.17",
     "apollo-server": "^3.5.0",
     "bcrypt": "^5.0.1",
     "graphql": "^16.2.0",

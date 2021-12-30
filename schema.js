@@ -3,7 +3,7 @@ const { schemaComposer } = require('graphql-compose')
 
 // making this a dictionary because I feel like that will be useful later on.
 const modelRegistry = {
-    User: require('./models/user'),
+    /* User: require('./models/user'), */
     Notification: require('./models/notification'),
     Integration: require('./models/integration')
 }
