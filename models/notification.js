@@ -41,7 +41,15 @@ const schema = new mongoose.Schema({
         }
     },
     callToAction: String,
-    link: String,
+    link: {
+        type: String,
+        validate: value => {
+            const validationResult = Joi.string().uri().validate(value)
+            if (validationResult.error) {
+                throw new Error(`"${value}" is not a valid url.`)
+            }
+        }
+    },
     originatedAt: String,
 })
 
