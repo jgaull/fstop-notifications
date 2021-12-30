@@ -2,6 +2,7 @@
 const mongoose = require('mongoose')
 const { composeMongoose } = require('graphql-compose-mongoose')
 const utils = require('./model-utils')
+const Joi = require('joi')
 
 const schema = new mongoose.Schema({
     title: {
@@ -30,7 +31,15 @@ const schema = new mongoose.Schema({
         type: mongoose.Schema.Types.Mixed,
         description: 'arbitrary data from the source system'
     },
-    iconUrl: String,
+    iconUrl: {
+        type: String,
+        validate: value => {
+            const validationResult = Joi.string().uri().validate(value)
+            if (validationResult.error) {
+                throw new Error(`"${value}" is not a valid url.`)
+            }
+        }
+    },
     callToAction: String,
     link: String,
     originatedAt: String,

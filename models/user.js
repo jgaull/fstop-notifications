@@ -13,14 +13,10 @@ const schema = new mongoose.Schema({
         index: true,
         unique: true,
         lowercase: true,
-        validate: email => {
-
-            const validationResult = Joi.object({
-                email: Joi.string().email()
-            }).validate({ email })
-
+        validate: value => {
+            const validationResult = Joi.string().email().validate(value)
             if (validationResult.error) {
-                throw new Error(`"${email}" is not a valid email address.`)
+                throw new Error(`"${value}" is not a valid email address.`)
             }
         }
     },
