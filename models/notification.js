@@ -50,7 +50,7 @@ const schema = new mongoose.Schema({
             }
         }
     },
-    originatedAt: String,
+    originatedAt: Date,
 })
 
 //schema.method({method: () => 'thing' }) for future reference
