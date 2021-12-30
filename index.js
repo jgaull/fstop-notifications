@@ -18,20 +18,17 @@ const modelRegistry = {
 
 async function main() {
 
-    mongoose.connect('mongodb://localhost:27017/test')
-
-    const accountsMongo = new Mongo(mongoose.connection)
-    const accountsPassword = new AccountsPassword({})
+    await mongoose.connect('mongodb://localhost:27017/fstop-notifications')
 
     const accountsServer = new AccountsServer({
         // We link the mongo adapter we created in the previous step to the server
-        db: accountsMongo,
+        db: new Mongo(mongoose.connection),
         // Replace this value with a strong random secret
         tokenSecret: 'my-super-random-secret',
     },
     {
         // We pass a list of services to the server, in this example we just use the password service
-        password: accountsPassword,
+        password: new AccountsPassword({}),
     })
 
     // We generate the accounts-js GraphQL module

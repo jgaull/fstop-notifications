@@ -1,12 +1,5 @@
 
 const { schemaComposer } = require('graphql-compose')
-const { makeExecutableSchema } = require('graphql-tools')
-
-//If you get the error "Definition object should contain 'type' property"
-// then it's probably because you accidentally assigned something other than
-// a mongooseResolver to either the graphQueries or graphMutations property of
-// one of the registered models
-//module.exports = schemaComposer.buildSchema()
 
 module.exports = (modelRegistry, schemas) => {
 
