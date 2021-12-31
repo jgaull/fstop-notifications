@@ -1,6 +1,6 @@
 {
   "name": "fstop-notifications",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Capture notifications and persist them in a graph.",
   "main": "index.js",
   "scripts": {
