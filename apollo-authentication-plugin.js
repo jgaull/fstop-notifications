@@ -24,5 +24,7 @@ module.exports = {
         if (!integration) {
             throw new Error(`Integration ID and Client Key combination does not match a valid integration`)
         }
+
+        initialRequestContext.context.integration = integration
     }
 }
