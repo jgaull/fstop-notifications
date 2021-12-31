@@ -20,6 +20,7 @@ index.js to test
 - [ ] Deploy to the cloud
 - [ ] Add instructions for local development to README
 - [ ] Share project with Mike
+- [ ] [Move authentication to ApolloServer context](https://www.apollographql.com/docs/apollo-server/data/resolvers/#the-context-argument)
 - [ ] [Add authentication for Users](https://www.apollographql.com/blog/backend/auth/email-password-authentication-with-accounts-js/)
 - [ ] Integration testing for core-services
 - [ ] Unit testing for the twitch-chat integration
