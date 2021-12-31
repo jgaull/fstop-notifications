@@ -15,7 +15,7 @@ index.js to test
 - [x] Add required parameters to the API
 - [x] Add input validation
 - [x] Add support for any type objects
-- [ ] Add authentication for Integration Providers
+- [x] Add authentication for Integration Providers
 - [ ] Add subscription for Notifications
 - [ ] Deploy to the cloud
 - [ ] Add instructions for local development to README
