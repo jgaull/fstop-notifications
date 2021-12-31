@@ -55,6 +55,11 @@ const schema = new mongoose.Schema({
         }
     },
     originatedAt: Date,
+    createdAt: {
+        type: Date,
+        expires: process.env.NOTIFICATIONS_TTL_MINUTES * 60,
+        default: Date.now
+    }
 })
 
 //schema.method({method: () => 'thing' }) for future reference
