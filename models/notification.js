@@ -5,7 +5,7 @@ const utils = require('./model-utils')
 const Joi = require('joi')
 const { schemaComposer } = require('graphql-compose')
 
-const { PubSub } = require('graphql-subscriptions');
+const { PubSub, withFilter } = require('graphql-subscriptions');
 const pubsub = new PubSub();
 
 const schema = new mongoose.Schema({
@@ -78,7 +78,6 @@ model.graphMutations = {
         resolver.resolve = async (rp) => {
             
             const result = await originalResolver(rp)
-            console.log(`result: ${JSON.stringify(result.record.toObject())}`)
             pubsub.publish('NOTIFICATION_CREATED', {
                 notificationCreated: result.record.toObject()
             })
@@ -94,7 +93,17 @@ model.graphMutations = {
 model.graphSubscriptions = {
     notificationCreated: {
         type: 'Notification',
-        subscribe: () => pubsub.asyncIterator(['NOTIFICATION_CREATED']),
+        subscribe: withFilter(
+            () => pubsub.asyncIterator(['NOTIFICATION_CREATED']),
+            (payload, variables) => {
+                const payloadUser = payload.notificationCreated.user._id.toString()
+                const filterByUser = variables.user
+                return payloadUser == filterByUser
+            }
+        ),
+        args: { // input arguments
+            user: 'ID!'
+        }
     }
 }
 

@@ -26,7 +26,7 @@ const subscriptionServer = SubscriptionServer.create({
     server: httpServer,
     // Pass a different path here if your ApolloServer serves at
     // a different path.
-    path: '/',
+    path: '/'
  })
 
  const server = new ApolloServer({
