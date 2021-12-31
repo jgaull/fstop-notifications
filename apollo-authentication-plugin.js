@@ -12,13 +12,13 @@ module.exports = {
 
         let integration
         try {
-            integration = await Integration.find({
+            integration = await Integration.findOne({
                 _id: username,
                 clientKey: password
             })
         }
         catch (error) {
-            console.log(`Error authentication integration: ${error.message}`)
+            console.log(`Error authenticating integration: ${error.message}`)
         }
         
         if (!integration) {

@@ -18,8 +18,8 @@ index.js to test
 - [x] Add authentication for Integration Providers
 - [x] Add subscription for Notifications
 - [x] Deploy to the cloud
-- [ ] Mongo TTL
-- [ ] Check that integration authentication works correctly when the username or password is wrong
+- [x] Mongo TTL
+- [x] Check that integration authentication works correctly when the username or password is wrong
 - [ ] Add instructions for local development to README
 - [ ] Share project with Mike
 - [ ] [Move authentication to ApolloServer context](https://www.apollographql.com/docs/apollo-server/data/resolvers/#the-context-argument)
@@ -30,3 +30,4 @@ index.js to test
 - [ ] Add webhook Integration Provider
 - [ ] Password reset flow
 - [ ] Make integration tokens "secret"
+- [ ] Authenticate subscriptions
