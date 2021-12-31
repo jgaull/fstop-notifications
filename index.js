@@ -3,7 +3,10 @@ const mongoose = require('mongoose')
 const schema = require('./schema')
 
 const { ApolloServer } = require('apollo-server');
-const server = new ApolloServer({ schema });
+const server = new ApolloServer({
+    plugins: [require('./apollo-authentication-plugin')],
+    schema
+});
 
 async function main() {
 

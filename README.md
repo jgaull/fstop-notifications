@@ -15,12 +15,12 @@ index.js to test
 - [x] Add required parameters to the API
 - [x] Add input validation
 - [x] Add support for any type objects
-- [ ] Add authentication for Users
 - [ ] Add authentication for Integration Providers
 - [ ] Add subscription for Notifications
 - [ ] Deploy to the cloud
 - [ ] Add instructions for local development to README
 - [ ] Share project with Mike
+- [ ] [Add authentication for Users](https://www.apollographql.com/blog/backend/auth/email-password-authentication-with-accounts-js/)
 - [ ] Integration testing for core-services
 - [ ] Unit testing for the twitch-chat integration
 - [ ] Add support for more Twitch notifications
