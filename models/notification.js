@@ -3,6 +3,10 @@ const mongoose = require('mongoose')
 const { composeMongoose } = require('graphql-compose-mongoose')
 const utils = require('./model-utils')
 const Joi = require('joi')
+const { schemaComposer } = require('graphql-compose')
+
+const { PubSub } = require('graphql-subscriptions');
+const pubsub = new PubSub();
 
 const schema = new mongoose.Schema({
     title: {
@@ -67,9 +71,31 @@ model.graphQueries = {
 }
 
 model.graphMutations = {
-    createNotification: resolvers.createOne(),
+    createNotification: () => {
+        const resolver = resolvers.createOne()
+
+        const originalResolver = resolver.resolve
+        resolver.resolve = async (rp) => {
+            
+            const result = await originalResolver(rp)
+            console.log(`result: ${JSON.stringify(result.record.toObject())}`)
+            pubsub.publish('NOTIFICATION_CREATED', {
+                notificationCreated: result.record.toObject()
+            })
+            return result
+        }
+
+        return resolver
+    },
     deleteNotification: resolvers.removeById(),
     deleteNotifications: resolvers.removeMany(),
+}
+
+model.graphSubscriptions = {
+    notificationCreated: {
+        type: 'Notification',
+        subscribe: () => pubsub.asyncIterator(['NOTIFICATION_CREATED']),
+    }
 }
 
 utils.addOneToManyRelation(model, 'user')
