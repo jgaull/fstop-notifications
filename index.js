@@ -1,8 +1,10 @@
 
+require('dotenv').config()
+
 const mongoose = require('mongoose')
 const schema = require('./schema')
 
-const { ApolloServer } = require('apollo-server');
+const { ApolloServer } = require('apollo-server')
 const server = new ApolloServer({
     plugins: [require('./apollo-authentication-plugin')],
     schema
@@ -10,7 +12,7 @@ const server = new ApolloServer({
 
 async function main() {
 
-    await mongoose.connect('mongodb://localhost:27017/test');
+    await mongoose.connect(process.env.DATABASE_URL)
 
     // The `listen` method launches a web server.
     const { url } = await server.listen()

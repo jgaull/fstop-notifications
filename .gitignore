@@ -76,3 +76,4 @@ typings/
 .fusebox/
 
 data
+.DS_Store
