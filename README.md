@@ -17,7 +17,9 @@ index.js to test
 - [x] Add support for any type objects
 - [x] Add authentication for Integration Providers
 - [x] Add subscription for Notifications
-- [ ] Deploy to the cloud
+- [x] Deploy to the cloud
+- [ ] Mongo TTL
+- [ ] Check that integration authentication works correctly when the username or password is wrong
 - [ ] Add instructions for local development to README
 - [ ] Share project with Mike
 - [ ] [Move authentication to ApolloServer context](https://www.apollographql.com/docs/apollo-server/data/resolvers/#the-context-argument)
