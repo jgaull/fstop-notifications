@@ -8,6 +8,7 @@
 - `npm i` to install dependencies
 - Create a copy of `.env.template` and name it `.env`
 - `docker-compose up` to run the DB locally
+- `npm run seed` to populate the db with initial data
 - `npm start` to run locally
 - Visit http://localhost:4000/ to test
 - Set up your Authorization header
