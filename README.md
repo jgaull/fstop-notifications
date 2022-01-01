@@ -1,6 +1,7 @@
 # fstop-notifications
 
 ## Run Locally
+[Watch the how to video](https://www.loom.com/share/ec565598d3f14855b8169d8fa5b11846)
 
 - Install docker
 - Install NVM
