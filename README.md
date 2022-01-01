@@ -1,15 +1,16 @@
 # fstop-notifications
 
-## Local Development
+## Run Locally
 
 - Install docker
 - Install NVM
 - `nvm use 14`
+- `npm i` to install dependencies
+- Create a copy of `.env.template` and name it `.env`
 - `docker-compose up` to run the DB locally
-- Visit http://localhost:4000/
-index.js to test
-- `npm start` to start the core services
-- `cd twitch-chat && npm start` to start the Twitch Chat integration
+- `npm start` to run locally
+- Visit http://localhost:4000/ to test
+- Set up your Authorization header
  
 ## Todo
 - [x] Add required parameters to the API

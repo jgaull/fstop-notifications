@@ -34,27 +34,32 @@ const schema = new mongoose.Schema({
 })
 
 //pre and post hooks
-const SALT_WORK_FACTOR = 10
 schema.pre('save', async function(next) {
 
     // only hash the password if it has been modified (or is new)
     if (!this.isModified('password')) return next()
 
     try {
-        // generate a salt
-        const salt = await bcrypt.genSalt(SALT_WORK_FACTOR)
-
-        // hash the password using our new salt
-        const hash = await bcrypt.hash(this.password, salt)
-
+        
         // override the cleartext password with the hashed one
-        this.password = hash
+        this.password = await hashPassword(this.password)
         next()
     }
     catch (error) {
         next(error)
     }
 })
+
+const SALT_WORK_FACTOR = 10
+schema.statics.hashPassword = hashPassword
+
+async function hashPassword (password) {
+    // generate a salt
+    const salt = await bcrypt.genSalt(SALT_WORK_FACTOR)
+
+    // hash the password using our new salt
+    return bcrypt.hash(password, salt)
+}
 
 //schema methods
 schema.methods.comparePassword = candidatePassword => {
