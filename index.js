@@ -91,21 +91,4 @@ async function main() {
     console.log(`🚀 Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`)
 }
 
-/*
-async function main() {
-
-    await mongoose.connect(process.env.DATABASE_URL)
-
-    await server.start();
-    server.applyMiddleware({
-        app,
-        path: '/'
-    });
-
-    // The `listen` method launches a web server.
-    await new Promise(resolve => httpServer.listen({ port: process.env.PORT }, resolve))
-    console.log(`🚀 Server ready at http://localhost:${process.env.PORT}${server.graphqlPath}`)
-}
-*/
-
 main().catch(err => console.log(`error initializing the server: ${err.stack}`))
