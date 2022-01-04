@@ -20,22 +20,4 @@
 - [Notifications](https://studio.apollographql.com/sandbox/explorer?endpoint=http%3A%2F%2Flocalhost%3A4000&explorerURLState=N4IgJg9gxgrgtgUwHYBcQC4QEcYIE4CeABAHIQoCWAZhVAIaURIDORwAOkkUUudbQwpNWHLtyKUUAGwSdxRKHgQMEYAIIo54xM2Z0A5rLHcUBAA5H5tJgFU8Urd3pSpAFQhqojJI6JSKSADWvmAMdL4BKAj6eIJMbL7cAPoUYIkS5pbiAL6%2BMMz4CcbiKWnF3AhwdBQOxbnFpVr19ZxwMChxXADCSipklDT03gAUACRKUBB4YOhEPcpRAPJICP38Q0JIAJJIZu0AhACURU69UWuDncMTUzNE4wiT08ei8jfTJ-IKZ6oa6Y11JqcFo%2BUHMGAAI2YigoZm8pD4l288xUYDG%2BXwsy2ABEjp9eAMBMifmiMXhZqMyS9fJIZL4dHpDDTMhFUNFYvDXl9TBZ-qlfPV5GTPvIAV8iJVqrV5ILxKEOhFJkg7NLxM43B4vJtfP4gr4phR9AFUX8GvyxM1OK12p0iNiEDJzoiiZtmGMwA6EE7CRthAAxGpRclEANSIMAJUqEAAbggALJ0JAEC4upg7PYoPFcj2O1bO30sYY0MOY%2B45r15n2dZihoPU4pIeBqKhUR5RMrcZogAA0IGjdDwFDoEJkzAwIC57BA7zSGBFRCntNkc6nACEKIEEF0YIOIPkp93fFOGQZl7Mp1tWCgABYUK%2B3pD6IhMAD8B6PIB5Z4XIACVAg77FFO8rhCuE7sBBIDMBAiDYmEEFTugCGfrerB3kQdBEPKlTIbkPYfpE7KdIhP4AGwAIxQFQAAcADsYBQI8ABMpEQmA5EACxMVApEcRCHFUExgHyFOZIkVOFFUXREK0cxrHsVxPF8RxYBUFOTSHmIwGet66zVrW%2BAkVy3CLhQ0jflOcYbggfp4DBXSJnQoTqRamkmSAYlgZJNG0TJclsZx3G8fxqkudkIDZEAA)
  
 ## Todo
-- [x] Add required parameters to the API
-- [x] Add input validation
-- [x] Add support for any type objects
-- [x] Add authentication for Integration Providers
-- [x] Add subscription for Notifications
-- [x] Deploy to the cloud
-- [x] Mongo TTL
-- [x] Check that integration authentication works correctly when the username or password is wrong
-- [x] Add instructions for local development to README
-- [ ] Share project with Mike
-- [ ] [Move authentication to ApolloServer context](https://www.apollographql.com/docs/apollo-server/data/resolvers/#the-context-argument)
-- [ ] [Add authentication for Users](https://www.apollographql.com/blog/backend/auth/email-password-authentication-with-accounts-js/)
-- [ ] Integration testing for core-services
-- [ ] Unit testing for the twitch-chat integration
-- [ ] Add support for more Twitch notifications
-- [ ] Add webhook Integration Provider
-- [ ] Password reset flow
-- [ ] Make integration tokens "secret"
-- [ ] Authenticate subscriptions
+[Todo](https://app.asana.com/0/1201612144709527/list)
