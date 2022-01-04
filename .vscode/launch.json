@@ -13,20 +13,15 @@
             ],
             "program": "${workspaceFolder}/index.js",
             "runtimeVersion": "14"
-        },{
+        },
+        {
             "type": "pwa-node",
             "request": "launch",
-            "name": "Twitch Chat",
+            "name": "Seed",
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "env" : {
-                "CHANNEL_NAME": "BikeCurious",
-                "INGEST_PATH": "http://localhost:4000/",
-                "INGEST_CLIENT_ID": "something",
-                "INGEST_CLIENT_SECRET": "something_secret",
-            },
-            "program": "${workspaceFolder}/twitch-chat/index.js",
+            "program": "${workspaceFolder}/seed.js",
             "runtimeVersion": "14"
         }
     ]

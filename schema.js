@@ -4,12 +4,19 @@ const { schemaComposer } = require('graphql-compose')
 module.exports = (modelRegistry, schemas) => {
 
     for (const key in modelRegistry) {
+        
+        const model = modelRegistry[key]
 
-        if (Object.hasOwnProperty.call(modelRegistry, key)) {
-
-            const model = modelRegistry[key]
+        if (model.graphQueries) {
             schemaComposer.Query.addFields(model.graphQueries)
+        }
+        
+        if (model.graphMutations) {
             schemaComposer.Mutation.addFields(model.graphMutations)
+        }
+        
+        if (model.graphSubscriptions) {
+            schemaComposer.Subscription.addFields(model.graphSubscriptions)
         }
     }
 
