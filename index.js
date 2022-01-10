@@ -11,9 +11,24 @@ const http = require('http')
 const { execute, subscribe } = require('graphql')
 const { SubscriptionServer } = require('subscriptions-transport-ws')
 
+var jwt = require('express-jwt')
+var jwks = require('jwks-rsa')
+
 // Required logic for integrating with Express
 const app = express()
 const httpServer = http.createServer(app)
+
+app.use(jwt({
+    secret: jwks.expressJwtSecret({
+        cache: true,
+        rateLimit: true,
+        jwksRequestsPerMinute: 5,
+        jwksUri: 'https://dev-cg0y3hxy.us.auth0.com/.well-known/jwks.json'
+  }),
+  audience: 'https://fstop.live/notifications',
+  issuer: 'https://dev-cg0y3hxy.us.auth0.com/',
+  algorithms: ['RS256']
+}))
 
 const subscriptionServer = SubscriptionServer.create({
     // This is the `schema` we just created.
@@ -31,7 +46,7 @@ const subscriptionServer = SubscriptionServer.create({
 
  const server = new ApolloServer({
     plugins: [
-        require('./apollo-authentication-plugin'),
+        //require('./apollo-authentication-plugin'),
         ApolloServerPluginDrainHttpServer({ httpServer }),
         {
             async serverWillStart() {
@@ -43,6 +58,21 @@ const subscriptionServer = SubscriptionServer.create({
             }
         }
     ],
+    context: async ({ req, ...rest }) => {
+
+        let isAuthenticated = false;
+        try {
+            const authHeader = req.headers.authorization || '';
+            if (authHeader) {
+                const token = authHeader.split(' ')[1];
+                const payload = await verifyToken(token);
+                isAuthenticated = payload && payload.sub ? true : false;
+            }
+        } catch (error) {
+            console.error(error);
+        }
+        return { ...rest, req, auth: { isAuthenticated } };
+    },
     schema
 })
 
